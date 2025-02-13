@@ -14,11 +14,6 @@
 </head>
 <body>
     <h1>Todo List</h1>
-    <?php if(isset($_SESSION['message'])): ?>
-        <p><?php echo $_SESSION['message']; ?></p>
-        <?php unset($_SESSION['message']); ?>
-    <?php endif; ?>
-    
     <form method="POST">
         <input type="text" name="task" placeholder="Enter a new task">
         <button type="submit" name="add_task">Add Task</button>
@@ -29,7 +24,6 @@
             <p class="<?php echo $task['is_completed'] ? 'completed' : ''; ?>">
                 <?php echo $task['task']; ?>
             </p>
-
             <?php if(!$task['is_completed']): ?>
                 <form method="POST" style="display:inline">
                     <input type="hidden" name="id" value="<?php echo $task['id']; ?>">

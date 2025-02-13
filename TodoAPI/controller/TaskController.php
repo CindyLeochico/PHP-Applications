@@ -1,7 +1,6 @@
 <?php
 include "model/Task.php";
 include "config/Database.php";
-session_start();
 
 class TaskController{
     private $taskModel;
@@ -11,34 +10,31 @@ class TaskController{
         $db= $database->connect();
         $this->taskModel = new Task($db);
     }
-    public function addTask($task){
+    public function addTask(){
         $jsonData = file_get_contents("php://input");
         $data = json_decode($jsonData, true);
         $this->taskModel->task = $data['task'];
-        $result = $this->taskModel->create();
+        $result = $this->taskModel->create(); 
         if($result){
-            echo  json_encode(["task"=>"Task added"]);
-      
-         echo $jsonData;
+          echo json_encode(["task"=>$data["task"]]);
+        }else{
+            echo json_encode(["message"=>"Task not added"]);
+        }
     }
-}
-    public function updateTask($id, $is_completed){
+    public function updateTask($id){
         $jsonData = file_get_contents("php://input");
         $data = json_decode($jsonData, true);
-
         $this->taskModel->id = $id;
-    $result =  $this->taskModel->update($data['is_completed']);
-        if($is_completed){
-            $_SESSION['message'] = "<span style='color: green;'> Task completed</span>";
-        }else{
-            $_SESSION['message'] = "<span style='color: red;'>Task marked as incomplete</span>"  ;    }
-        header("Location:".$_SERVER['PHP_SELF']);
-        exit;
+        $result = $this->taskModel->update($data['is_completed']);
+        if($result){
+            echo json_encode(["id"=>$id, "is_completed"=>$data["is_completed"]]);
+          }else{
+              echo json_encode(["message"=>"Task not updated"]);
+          }
     }
     public function deleteTask($id){
         $this->taskModel->id = $id;
         $this->taskModel->delete();
-        $_SESSION['message'] = "<span style='color: red;'>Task deleted</span>" ;  
         header("Location:".$_SERVER['PHP_SELF']);
         exit;
     }
@@ -48,12 +44,10 @@ class TaskController{
         if($tasks->num_rows==0){
             // error
             echo json_encode(["message"=>"No tasks found"]);
-        }
-        else{
-            $data=$tasks->fetch_all(MYSQLI_ASSOC);
-            $jsonData=json_encode($data);
+        }else{
+            $data = $tasks->fetch_all(MYSQLI_ASSOC);
+            $jsonData = json_encode($data);
             echo $jsonData;
         }
-       
     }
 }
