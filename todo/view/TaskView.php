@@ -1,3 +1,8 @@
+<?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,11 +15,35 @@
             color: gray; /* Optional: Makes it look faded */
             font-weight: bold;
         }
+        .success-message {
+            color: green;
+        }
+        .delete-message {
+            color: red;
+        }
+       
     </style>
 </head>
 <body>
     <h1>Todo List</h1>
-    <form method="POST">
+   
+
+    <?php if (isset($_SESSION['task_added']) && $_SESSION['task_added']): ?>
+        <p class="success-message">Task successfully added!</p>
+        <?php unset($_SESSION['task_added']); ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['task_completed']) && $_SESSION['task_completed']): ?>
+        <p class="success-message">Task successfully completed!</p>
+        <?php unset($_SESSION['task_completed']); ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['task_deleted']) && $_SESSION['task_deleted']): ?>
+        <p class="delete-message">Task successfully deleted!</p>
+        <?php unset($_SESSION['task_deleted']); ?>
+    <?php endif; ?>
+
+     <form method="POST">
         <input type="text" name="task" placeholder="Enter a new task">
         <button type="submit" name="add_task">Add Task</button>
     </form>
