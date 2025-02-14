@@ -21,7 +21,9 @@ if (session_status() == PHP_SESSION_NONE) {
         .unsuccess-message {
             color: red;
         }
-        
+        .delete-message {
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -33,6 +35,12 @@ if (session_status() == PHP_SESSION_NONE) {
     <?php elseif (isset($_SESSION['task_added']) && !$_SESSION['task_added']): ?>
         <p class="unsuccess-message">Failed to add task!</p>
         <?php unset($_SESSION['task_added']); ?>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['task_deleted']) && $_SESSION['task_deleted']): ?>
+        <p class="delete-message">Task deleted!</p>
+        <?php unset($_SESSION['task_deleted']); ?>
+   
     <?php endif; ?>
 
     <form method="POST">
