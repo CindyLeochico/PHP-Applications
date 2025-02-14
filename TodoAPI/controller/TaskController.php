@@ -24,26 +24,19 @@ class TaskController{
     public function updateTask($id){
         $jsonData = file_get_contents("php://input");
         $data = json_decode($jsonData, true);
-        if (isset($data['is_completed'])) {
-            $this->taskModel->id = $id;
-            $result = $this->taskModel->update($data['is_completed']);
-            if($result){
-                echo json_encode(["id" => $this->taskModel->id, "is_completed" => $data["is_completed"]]);
-            }else{
-                echo json_encode(["message"=>"Task not updated"]);
-            }
-        } else {
-            echo "is_completed key is missing.";
-        }
+        $this->taskModel->id = $id;
+        $result = $this->taskModel->update($data['is_completed']);
+        if($result){
+            echo json_encode(["id"=>$id, "is_completed"=>$data["is_completed"]]);
+          }else{
+              echo json_encode(["message"=>"Task not updated"]);
+          }
     }
     public function deleteTask($id){
         $this->taskModel->id = $id;
-        $result = $this->taskModel->delete();
-        if ($result) {
-            echo json_encode(["message" => "Task deleted"]);
-        } else {
-            echo json_encode(["message" => "Task not deleted"]);
-        }
+        $this->taskModel->delete();
+        header("Location:".$_SERVER['PHP_SELF']);
+        exit;
     }
     public function index(){
         $tasks = $this->taskModel->read();

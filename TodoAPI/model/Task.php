@@ -22,16 +22,12 @@ class Task{
     }
 
     public function update($is_completed){
-        $query = "UPDATE tasks SET is_completed = ? WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("ii", $is_completed, $this->id);
-        return $stmt->execute();
+        $query = "UPDATE tasks SET is_completed = $is_completed WHERE id = " . $this->id;
+        return $this->conn->query($query); 
     }
 
     public function delete(){
-        $query = "DELETE FROM tasks WHERE id = ?";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("i", $this->id);
-        return $stmt->execute();
+        $query = "DELETE FROM tasks WHERE id = " . $this->id;
+        return $this->conn->query($query);
     }
 }
