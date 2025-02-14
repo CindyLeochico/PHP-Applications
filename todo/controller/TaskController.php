@@ -13,15 +13,27 @@ class TaskController{
     }
     public function addTask($task){
        $this->taskModel->task = $task;
-       $this->taskModel->create(); 
+
+       if (empty($task)) {
+           $_SESSION['task_added'] = false;
+       } else {
+           if (       $this->taskModel->create()) { 
        $_SESSION['task_added'] = true;
+} else {
+               $_SESSION['task_added'] = false;
+           }
+       }
+
        header("Location:".$_SERVER['PHP_SELF']);
        exit;
     }
     public function updateTask($id, $is_completed){
         $this->taskModel->id = $id;
-        $this->taskModel->update($is_completed);
-        $_SESSION['task_completed'] = true;
+if ($this->taskModel->update($is_completed)) {
+        $_SESSION['task_updated'] = true;
+} else {
+            $_SESSION['task_updated'] = false;
+        }
         header("Location:".$_SERVER['PHP_SELF']);
         exit;
     }

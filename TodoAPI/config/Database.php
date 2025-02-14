@@ -1,7 +1,7 @@
 <?php
 class Database{
     private $host = "localhost";
-    private $db_name = "todofs2";
+    private $db_name = "todo";
     private $username = "root";
     private $password = "";
     private $conn;
