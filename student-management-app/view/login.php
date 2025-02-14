@@ -6,12 +6,12 @@ $database = new Database();
 $conn = $database->connect();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
+    $email = $_POST['email'];
     $password = $_POST['password'];
 
     // Prepare and execute the query
-    $stmt = $conn->prepare("SELECT * FROM user WHERE username = :username");
-    $stmt->bindParam(':username', $username);
+    $stmt = $conn->prepare("SELECT * FROM user WHERE email = :email");
+    $stmt->bindParam(':email', $email);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -19,11 +19,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($user && password_verify($password, $user['password'])) {
         // Password is correct, start a session
         $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
+        $_SESSION['email'] = $user['email'];
         header("Location: dashboard.php"); // Redirect to the dashboard
         exit();
     } else {
-        $error = "Invalid username or password.";
+        $error = "Invalid email or password.";
     }
     
 }
@@ -34,22 +34,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="../public/style.css"> 
+    <link rel="stylesheet" href="../public/style-new.css"> 
 
 </head>
 <body>
-    <h2>Login</h2>
-    <?php if (isset($error)): ?>
+   
+    
+    <form method="post" action="">
+         <h2>Login</h2>
+        <?php if (isset($error)): ?>
         <p style="color: red;"><?php echo $error; ?></p>
     <?php endif; ?>
-    <form method="post" action="">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required>
         <br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
         <br>
-        <button type="submit">Login</button>
+        <button class="button" type="submit">Login</button>
     </form>
 </body>
 </html>

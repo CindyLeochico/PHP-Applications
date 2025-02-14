@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config/Database.php'; // Adjust the path as needed
+require_once '../config/Database.php'; 
 
 $database = new Database();
 $conn = $database->connect();
@@ -58,15 +58,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
-    <link rel="stylesheet" href="../public/style.css"> 
+    <link rel="stylesheet" href="../public/style-new.css"> 
 
 </head>
 <body>
-    <h2>Register</h2>
-    <?php if (isset($error)): ?>
+   
+    
+    <form method="post" action="">
+         <h2>Register</h2>
+        <?php if (isset($error)): ?>
         <p style="color: red;"><?php echo $error; ?></p>
     <?php endif; ?>
-    <form method="post" action="">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
         <br>
@@ -79,7 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="confirm_password">Confirm Password:</label>
         <input type="password" id="confirm_password" name="confirm_password" required>
         <br>
-        <button type="submit">Register</button>
+        <button class="button" type="submit">Register</button>
     </form>
 </body>
 </html>
