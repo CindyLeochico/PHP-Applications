@@ -35,10 +35,18 @@ if($_SERVER["REQUEST_METHOD"] === "GET"){
     $controller->addTask();
 }elseif($_SERVER["REQUEST_METHOD"] === "PUT"){
     // echo "PUT";
-    $controller->updateTask($request[1]);
+    if (isset($request[1])) {
+        $controller->updateTask($request[1]);
+    } else {
+        echo "Task ID is missing.";
+    }
 }elseif($_SERVER["REQUEST_METHOD"] === "DELETE"){
-    echo "DELETE";
-    // $controller->deleteTask();
+    //echo "DELETE";
+    if (isset($request[1])) {
+        $controller->deleteTask($request[1]);
+    } else {
+        echo "Task ID is missing.";
+    }
 }else{
     echo "ELSE";
     // $controller-> index();
